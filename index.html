@@ -148,6 +148,56 @@
             font-size: 0.8em;
             margin-top: 30px;
         }
+
+        /* スマートフォン向けのスタイル調整 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 25px;
+            }
+            .button-group {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .toggle-button {
+                padding: 12px 10px;
+                font-size: 0.9em;
+            }
+            .input-field {
+                padding: 12px;
+            }
+            .execute-button {
+                padding: 15px;
+                font-size: 1.1em;
+            }
+            .output-area {
+                padding: 15px;
+                font-size: 1em;
+            }
+            .copy-button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* 特に小さい画面向けの追加調整 */
+        @media (max-width: 360px) {
+            .container {
+                padding: 15px;
+            }
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.3em;
+            }
+        }
     </style>
 </head>
 <body>
