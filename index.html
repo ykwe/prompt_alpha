@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マイウェブサイト</title>
+    <title>プロンプトジェネレーター</title>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
@@ -23,17 +23,156 @@
         h1 {
             color: #333;
             text-align: center;
+            margin-bottom: 30px;
         }
-        p {
+        .input-section {
+            margin-bottom: 25px;
+        }
+        .input-section h2 {
+            font-size: 0.9em;
             color: #666;
+            margin-bottom: 5px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .toggle-button {
+            padding: 10px 15px;
+            border: 2px solid #007bff;
+            background-color: white;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-button.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .execute-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: background-color 0.3s ease;
+        }
+        .execute-button:hover {
+            background-color: #218838;
+        }
+        .output-section {
+            position: relative;
+        }
+        .output-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .copy-button:hover {
+            background-color: #5a6268;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ようこそ！</h1>
-        <p>これは GitHub Pages でホストされているウェブサイトです。</p>
-        <p>ここに好きなコンテンツを追加することができます。</p>
+        <h1>プロンプトジェネレーター</h1>
+        
+        <div class="input-section">
+            <h2>調査対象</h2>
+            <input type="text" class="input-field" id="target" placeholder="例：NTTアーバンソリューションズ">
+        </div>
+
+        <div class="button-group">
+            <button class="toggle-button" data-type="企業/製品概要">企業/製品概要</button>
+            <button class="toggle-button" data-type="競合企業/製品">競合企業/製品</button>
+            <button class="toggle-button" data-type="ターゲット層">ターゲット層</button>
+            <button class="toggle-button" data-type="独自性">独自性</button>
+            <button class="toggle-button" data-type="課題点">課題点</button>
+            <button class="toggle-button" data-type="強みと弱み">強みと弱み</button>
+        </div>
+
+        <button class="execute-button" id="generate">プロンプト生成</button>
+
+        <div class="output-section">
+            <textarea class="output-area" id="output" readonly></textarea>
+            <button class="copy-button" id="copy">コピー</button>
+        </div>
     </div>
+
+    <script>
+        // トグルボタンの処理
+        const toggleButtons = document.querySelectorAll('.toggle-button');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+            });
+        });
+
+        // プロンプト生成の処理
+        document.getElementById('generate').addEventListener('click', () => {
+            const target = document.getElementById('target').value;
+            const selectedTypes = Array.from(document.querySelectorAll('.toggle-button.active'))
+                .map(button => button.dataset.type);
+
+            if (!target) {
+                alert('調査対象を入力してください。');
+                return;
+            }
+
+            if (selectedTypes.length === 0) {
+                alert('調査内容を1つ以上選択してください。');
+                return;
+            }
+
+            const prompt = `${target}について、以下の内容を調査しレポートにまとめてください。\n\n${selectedTypes.map(type => `・${type}`).join('\n')}`;
+            document.getElementById('output').value = prompt;
+        });
+
+        // コピーボタンの処理
+        document.getElementById('copy').addEventListener('click', () => {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            
+            const copyButton = document.getElementById('copy');
+            copyButton.textContent = 'コピー完了！';
+            setTimeout(() => {
+                copyButton.textContent = 'コピー';
+            }, 2000);
+        });
+    </script>
 </body>
 </html> 
