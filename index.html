@@ -4,114 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>企業調査プロンプトジェネレーター</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #007AFF;
+            --secondary-color: #5856D6;
+            --success-color: #34C759;
+            --background-color: #F2F2F7;
+            --card-background: #FFFFFF;
+            --text-primary: #1C1C1E;
+            --text-secondary: #6C6C70;
+        }
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: var(--background-color);
+            color: var(--text-primary);
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: white;
+            background-color: var(--card-background);
             padding: 40px 50px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #333;
+            color: var(--text-primary);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        h2 {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
         .input-section {
-            margin-bottom: 25px;
-        }
-        .input-section h2 {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 35px;
         }
         .input-field {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
+            padding: 15px;
+            border: 1px solid #E5E5EA;
+            border-radius: 10px;
+            font-size: 1.1em;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+        .input-field::placeholder {
+            color: var(--text-secondary);
         }
         .button-group {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
         }
         .toggle-button {
-            padding: 12px 15px;
-            border: 2px solid #007bff;
-            background-color: white;
-            color: #007bff;
-            border-radius: 5px;
+            padding: 16px 15px;
+            border: 2px solid var(--primary-color);
+            background-color: var(--card-background);
+            color: var(--primary-color);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
             text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
         }
         .toggle-button.active {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
         }
         .execute-button {
             display: block;
             width: 100%;
-            padding: 15px;
-            background-color: #28a745;
+            padding: 18px;
+            background-color: var(--success-color);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 500;
             cursor: pointer;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             transition: background-color 0.3s ease;
         }
         .execute-button:hover {
-            background-color: #218838;
+            background-color: #2FB750;
         }
         .output-section {
-            position: relative;
+            margin-bottom: 10px;
         }
         .output-area {
             width: 100%;
-            min-height: 150px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            min-height: 200px;
+            padding: 20px;
+            border: 1px solid #E5E5EA;
+            border-radius: 12px;
+            margin-bottom: 8px;
             font-size: 1.1em;
             line-height: 1.6;
             resize: vertical;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Mono', 'Segoe UI Mono', monospace;
+            background-color: var(--background-color);
+            color: var(--text-primary);
         }
         .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            background-color: #6c757d;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--secondary-color);
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.9em;
+            margin-top: 10px;
         }
         .copy-button:hover {
-            background-color: #5a6268;
+            background-color: #4B4BB3;
+        }
+        .copy-button i {
+            font-size: 1.1em;
+        }
+        .helper-text {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 8px;
         }
         .version {
             text-align: center;
-            color: #999;
+            color: var(--text-secondary);
             font-size: 0.8em;
-            margin-top: 20px;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -124,23 +157,31 @@
             <input type="text" class="input-field" id="target" placeholder="企業名、製品名などを入力してください">
         </div>
 
-        <div class="button-group">
-            <button class="toggle-button" data-type="概要">概要</button>
-            <button class="toggle-button" data-type="競合">競合</button>
-            <button class="toggle-button" data-type="ターゲット層">ターゲット層</button>
-            <button class="toggle-button" data-type="独自性">独自性</button>
-            <button class="toggle-button" data-type="課題点">課題点</button>
-            <button class="toggle-button" data-type="強みと弱み">強みと弱み</button>
-            <button class="toggle-button" data-type="コミュニケーション戦略">コミュニケーション戦略</button>
-            <button class="toggle-button" data-type="ターゲットインサイト">ターゲットインサイト</button>
-            <button class="toggle-button" data-type="ファクト">ファクト</button>
+        <div class="input-section">
+            <h2>調査項目</h2>
+            <div class="button-group">
+                <button class="toggle-button" data-type="概要">概要</button>
+                <button class="toggle-button" data-type="競合">競合</button>
+                <button class="toggle-button" data-type="ターゲット層">ターゲット層</button>
+                <button class="toggle-button" data-type="独自性">独自性</button>
+                <button class="toggle-button" data-type="課題点">課題点</button>
+                <button class="toggle-button" data-type="強みと弱み">強みと弱み</button>
+                <button class="toggle-button" data-type="コミュニケーション戦略">コミュニケーション戦略</button>
+                <button class="toggle-button" data-type="ターゲットインサイト">ターゲットインサイト</button>
+                <button class="toggle-button" data-type="ファクト">ファクト</button>
+            </div>
         </div>
 
         <button class="execute-button" id="generate">プロンプト生成</button>
 
         <div class="output-section">
+            <h2>プロンプト</h2>
             <textarea class="output-area" id="output"></textarea>
-            <button class="copy-button" id="copy">コピー</button>
+            <div class="helper-text">プロンプトは編集可能です</div>
+            <button class="copy-button" id="copy">
+                <i class="fas fa-copy"></i>
+                コピー
+            </button>
         </div>
 
         <div class="version">v0.1</div>
@@ -154,6 +195,13 @@
                 button.classList.toggle('active');
             });
         });
+
+        // 現在の月を取得する関数
+        function getCurrentMonth() {
+            const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            const now = new Date();
+            return months[now.getMonth()];
+        }
 
         // プロンプト生成の処理
         document.getElementById('generate').addEventListener('click', () => {
@@ -171,7 +219,21 @@
                 return;
             }
 
-            const prompt = `${target}について、以下の内容を調査しレポートにまとめてください。\n\n${selectedTypes.map(type => `・${type}`).join('\n')}`;
+            const prompt = `${target}について、以下の内容を調査しレポートにまとめてください。
+
+【調査項目】
+${selectedTypes.map(type => `・${type}`).join('\n')}
+
+【調査条件】
+対象エリア：
+日本国内
+
+時期：
+${getCurrentMonth()}時点
+
+レポート形式：
+ですます調の論述形式`;
+
             document.getElementById('output').value = prompt;
         });
 
@@ -182,9 +244,9 @@
             document.execCommand('copy');
             
             const copyButton = document.getElementById('copy');
-            copyButton.textContent = 'コピー完了！';
+            copyButton.innerHTML = '<i class="fas fa-check"></i> コピー完了！';
             setTimeout(() => {
-                copyButton.textContent = 'コピー';
+                copyButton.innerHTML = '<i class="fas fa-copy"></i> コピー';
             }, 2000);
         });
     </script>
