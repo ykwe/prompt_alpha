@@ -16,7 +16,7 @@
             max-width: 800px;
             margin: 0 auto;
             background-color: white;
-            padding: 30px;
+            padding: 40px 50px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -41,19 +41,21 @@
             font-size: 1em;
         }
         .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-bottom: 25px;
         }
         .toggle-button {
-            padding: 10px 15px;
+            padding: 12px 15px;
             border: 2px solid #007bff;
             background-color: white;
             color: #007bff;
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
         }
         .toggle-button.active {
             background-color: #007bff;
@@ -85,9 +87,10 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             margin-bottom: 10px;
-            font-size: 0.9em;
+            font-size: 1.1em;
             line-height: 1.6;
             resize: vertical;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
         }
         .copy-button {
             position: absolute;
@@ -104,6 +107,12 @@
         .copy-button:hover {
             background-color: #5a6268;
         }
+        .version {
+            text-align: center;
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -112,24 +121,29 @@
         
         <div class="input-section">
             <h2>調査対象</h2>
-            <input type="text" class="input-field" id="target" placeholder="例：NTTアーバンソリューションズ">
+            <input type="text" class="input-field" id="target" placeholder="企業名、製品名などを入力してください">
         </div>
 
         <div class="button-group">
-            <button class="toggle-button" data-type="企業/製品概要">企業/製品概要</button>
-            <button class="toggle-button" data-type="競合企業/製品">競合企業/製品</button>
+            <button class="toggle-button" data-type="概要">概要</button>
+            <button class="toggle-button" data-type="競合">競合</button>
             <button class="toggle-button" data-type="ターゲット層">ターゲット層</button>
             <button class="toggle-button" data-type="独自性">独自性</button>
             <button class="toggle-button" data-type="課題点">課題点</button>
             <button class="toggle-button" data-type="強みと弱み">強みと弱み</button>
+            <button class="toggle-button" data-type="コミュニケーション戦略">コミュニケーション戦略</button>
+            <button class="toggle-button" data-type="ターゲットインサイト">ターゲットインサイト</button>
+            <button class="toggle-button" data-type="ファクト">ファクト</button>
         </div>
 
         <button class="execute-button" id="generate">プロンプト生成</button>
 
         <div class="output-section">
-            <textarea class="output-area" id="output" readonly></textarea>
+            <textarea class="output-area" id="output"></textarea>
             <button class="copy-button" id="copy">コピー</button>
         </div>
+
+        <div class="version">v0.1</div>
     </div>
 
     <script>
