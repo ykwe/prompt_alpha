@@ -6,40 +6,38 @@
     <title>企業調査プロンプトジェネレーター</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #007AFF;
-            --secondary-color: #5856D6;
-            --success-color: #34C759;
-            --background-color: #F2F2F7;
-            --card-background: #FFFFFF;
-            --text-primary: #1C1C1E;
-            --text-secondary: #6C6C70;
+        /* iOSでのズーム防止のための追加設定 */
+        html {
+            touch-action: manipulation;
+            -webkit-text-size-adjust: none;
         }
         body {
+            touch-action: manipulation;
+            -webkit-touch-callout: none;
             font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: var(--background-color);
-            color: var(--text-primary);
+            background-color: #F2F2F7;
+            color: #1C1C1E;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: var(--card-background);
+            background-color: #FFFFFF;
             padding: 40px 50px;
             border-radius: 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         h1 {
-            color: var(--text-primary);
+            color: #1C1C1E;
             text-align: center;
             margin-bottom: 40px;
             font-size: 2em;
             font-weight: 600;
         }
         h2 {
-            color: var(--text-secondary);
+            color: #6C6C70;
             font-size: 1.1em;
             margin-bottom: 12px;
             font-weight: 600;
@@ -53,12 +51,12 @@
             border: 1px solid #E5E5EA;
             border-radius: 10px;
             font-size: 1.1em;
-            background-color: var(--background-color);
-            color: var(--text-primary);
+            background-color: #F2F2F7;
+            color: #1C1C1E;
             box-sizing: border-box;
         }
         .input-field::placeholder {
-            color: var(--text-secondary);
+            color: #6C6C70;
         }
         .button-group {
             display: grid;
@@ -68,9 +66,9 @@
         }
         .toggle-button {
             padding: 16px 15px;
-            border: 2px solid var(--primary-color);
-            background-color: var(--card-background);
-            color: var(--primary-color);
+            border: 2px solid #007AFF;
+            background-color: #FFFFFF;
+            color: #007AFF;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -80,14 +78,14 @@
             font-weight: 500;
         }
         .toggle-button.active {
-            background-color: var(--primary-color);
+            background-color: #007AFF;
             color: white;
         }
         .execute-button {
             display: block;
             width: 100%;
             padding: 18px;
-            background-color: var(--success-color);
+            background-color: #34C759;
             color: white;
             border: none;
             border-radius: 12px;
@@ -114,8 +112,8 @@
             line-height: 1.6;
             resize: vertical;
             font-family: ui-monospace, 'SF Mono', Monaco, 'Cascadia Mono', 'Segoe UI Mono', monospace;
-            background-color: var(--background-color);
-            color: var(--text-primary);
+            background-color: #F2F2F7;
+            color: #1C1C1E;
             box-sizing: border-box;
         }
         .copy-button {
@@ -123,7 +121,7 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background-color: var(--secondary-color);
+            background-color: #5856D6;
             color: white;
             border: none;
             border-radius: 8px;
@@ -138,13 +136,13 @@
             font-size: 1.1em;
         }
         .helper-text {
-            color: var(--text-secondary);
+            color: #6C6C70;
             font-size: 0.9em;
             margin-top: 8px;
         }
         .version {
             text-align: center;
-            color: var(--text-secondary);
+            color: #6C6C70;
             font-size: 0.8em;
             margin-top: 30px;
         }
@@ -198,6 +196,12 @@
                 font-size: 1.3em;
             }
         }
+
+        /* 入力フィールドのフォントサイズを16px以上に設定してズームを防止 */
+        input[type="text"], textarea {
+            font-size: 16px;
+            touch-action: manipulation;
+        }
     </style>
 </head>
 <body>
@@ -240,6 +244,22 @@
     </div>
 
     <script>
+        // iOSでのズーム防止
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
         // トグルボタンの処理
         const toggleButtons = document.querySelectorAll('.toggle-button');
         toggleButtons.forEach(button => {
